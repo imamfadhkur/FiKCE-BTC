@@ -41,7 +41,7 @@ Untuk menjalankan kode di dalam repositori ini, disarankan menggunakan virtual e
 ### 1. Clone Repositori
 
 ```bash
-git clone https://github.com/username-anda/FIKCE-BTC.git
+git clone https://github.com/imamfadhkur/FiKCE-BTC.git
 cd FIKCE-BTC
 ```
 
