@@ -4,69 +4,69 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.1.2-EE4C2C.svg)](https://pytorch.org/)
 [![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-F9DC3E.svg)](https://huggingface.co/)
 
-Repositori ini berisi kode implementasi resmi dan material pendukung untuk riset **FIKCE-BTC (Filtered Keyword Contextual Embedding for Bloom's Taxonomy Classification)**.
+This repository contains the official implementation and supporting material for our paper titled **FIKCE-BTC (Filtered Keyword Contextual Embedding for Bloom's Taxonomy Classification)**.
 
-Penelitian ini mengusulkan metode integrasi ekstraksi kata kunci berbasis **TF-IDF Filtering** spesifik-kelas dengan model representasi semantik berbasis Transformer (BERT dan RoBERTa) untuk mengklasifikasikan pertanyaan kognitif secara otomatis berdasarkan Taksonomi Bloom.
+The method integrates class-specific keyword extraction based on **TF-IDF filtering** with Transformer-based semantic representations (BERT and RoBERTa) to automatically classify cognitive questions according to Bloom's Taxonomy.
 
 ---
 
-## 📁 Struktur Repositori
+## Repository Structure
 
-Repositori ini diatur untuk memudahkan reproduksi eksperimen dengan skenario penggunaan **undersampling** (untuk data seimbang) dan tanpa **undersampling** (data natural).
+This repository organizes experiments into two reproducible scenarios: **with undersampling** (balanced data) and **without undersampling** (natural data distribution).
 
 ```text
 FIKCE-BTC/
 ├── data/
-│   └── README.md                             # Instruksi pengunduhan dataset
+│   └── README.md                             # Dataset download instructions
 ├── notebooks/
 │   ├── with_undersampling/
-│   │   ├── 01_baseline_models.ipynb          # Eksperimen Baseline (CNN, LSTM, CNN-LSTM)
-│   │   ├── 02_proposed_bert_fikce.ipynb      # Proposed Method: BERT + FIKCE
-│   │   └── 03_proposed_roberta_fikce.ipynb   # Proposed Method: RoBERTa + FIKCE
+│   │   ├── 01_baseline_models.ipynb          # Baseline experiments (CNN, LSTM, CNN-LSTM)
+│   │   ├── 02_proposed_bert_fikce.ipynb      # Proposed method: BERT + FIKCE
+│   │   └── 03_proposed_roberta_fikce.ipynb   # Proposed method: RoBERTa + FIKCE
 │   ├── without_undersampling/
-│   │   ├── 01_baseline_models.ipynb          # Eksperimen Baseline (Tanpa Undersampling)
-│   │   ├── 02_proposed_bert_fikce.ipynb      # Proposed Method: BERT + FIKCE (Tanpa Undersampling)
-│   │   └── 03_proposed_roberta_fikce.ipynb   # Proposed Method: RoBERTa + FIKCE (Tanpa Undersampling)
-│   └── 04_clustering_analysis.ipynb          # Analisis Subject-Domain (K-Means & UMAP)
-├── requirements.txt                          # Spesifikasi library & dependencies
-└── README.md                                 # File ini
+│   │   ├── 01_baseline_models.ipynb          # Baseline experiments (without undersampling)
+│   │   ├── 02_proposed_bert_fikce.ipynb      # Proposed method: BERT + FIKCE (without undersampling)
+│   │   └── 03_proposed_roberta_fikce.ipynb   # Proposed method: RoBERTa + FIKCE (without undersampling)
+│   └── 04_clustering_analysis.ipynb          # Subject-domain analysis (K-Means & UMAP)
+├── requirements.txt                          # Library and dependency specifications
+└── README.md                                 # This file
 ```
 
 ---
 
-## 🚀 Instalasi & Persiapan Lingkungan
+## Installation & Environment Setup
 
-Untuk menjalankan kode di dalam repositori ini, disarankan menggunakan virtual environment seperti **conda** atau **venv**.
+To run the code in this repository, use a virtual environment such as **conda** or **venv**.
 
-### 1. Clone Repositori
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/imamfadhkur/FiKCE-BTC.git
 cd FIKCE-BTC
 ```
 
-### 2. Instalasi Dependencies
+### 2. Install Dependencies
 
-Pastikan Anda menggunakan **Python 3.10** atau lebih baru, kemudian jalankan:
+Make sure you're on **Python 3.10** or later, then run:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Persiapan Dataset
+### 3. Prepare the Dataset
 
-Unduh dataset **Bloom's Taxonomy Classification** dari Kaggle.
+Download the **Bloom's Taxonomy Classification** dataset from Kaggle.
 
-Selanjutnya, letakkan file `.csv` yang telah diunduh ke dalam folder `data/` sesuai instruksi pada `data/README.md`.
+Place the downloaded `.csv` file in the `data/` folder as described in `data/README.md`.
 
 ---
 
-## 📊 Hasil Eksperimen Utama
+## Main Experimental Results
 
-Berikut adalah ringkasan hasil performa model pada skenario **undersampling** (dataset seimbang).
+The table below summarizes model performance under the **undersampling** scenario (balanced dataset).
 
-| Embedding Model | Fitur Tambahan | Arsitektur | Accuracy (%) | F1-Score | Skrip Implementasi |
-|-----------------|----------------|------------|-------------:|---------:|--------------------|
+| Embedding Model | Additional Feature | Architecture | Accuracy (%) | F1-Score | Implementation Script |
+|-----------------|---------------------|--------------|-------------:|---------:|------------------------|
 | BERT | None (Baseline) | CNN | 79.15 | 79.06 | `01_baseline_models.ipynb` |
 | BERT | None (Baseline) | CNN-LSTM | 80.11 | 79.67 | `01_baseline_models.ipynb` |
 | BERT | **FIKCE (Proposed)** | CNN-LSTM | **82.45** | **82.26** | `02_proposed_bert_fikce.ipynb` |
@@ -74,53 +74,53 @@ Berikut adalah ringkasan hasil performa model pada skenario **undersampling** (d
 | RoBERTa | **FIKCE (Proposed)** | CNN-LSTM | 83.94 | 83.81 | `03_proposed_roberta_fikce.ipynb` |
 | RoBERTa | **FIKCE (Proposed)** | CNN | **85.21** | **85.14** | `03_proposed_roberta_fikce.ipynb` |
 
-> **Catatan**
+> **Note**
 >
-> Seluruh variasi eksperimen lainnya, termasuk kombinasi dengan TF-IDF standar dan skenario **tanpa undersampling**, tersedia dan dapat direproduksi melalui direktori `notebooks/`.
+> All other experimental variations, including combinations with standard TF-IDF and the **without-undersampling** scenario, are available and reproducible from the `notebooks/` directory.
 
 ---
 
-## 🛠️ Tahapan Reproduksi (Step-by-Step)
+## Reproduction Steps
 
-Untuk mereproduksi seluruh eksperimen, jalankan notebook secara berurutan berikut ini.
+To reproduce the full set of experiments, run the notebooks in the following order.
 
-1. Masuk ke folder `notebooks/with_undersampling/`.
+1. Go to the `notebooks/with_undersampling/` folder.
 
-2. Jalankan:
+2. Run:
 
    ```text
    01_baseline_models.ipynb
    ```
 
-   untuk memperoleh performa dasar model semantik.
+   to obtain the baseline performance of the semantic models.
 
-3. Jalankan:
+3. Run:
 
    ```text
    02_proposed_bert_fikce.ipynb
    03_proposed_roberta_fikce.ipynb
    ```
 
-   untuk mengamati integrasi fitur **Filtered Keyword (FIKCE)** ke dalam classifier berbasis Deep Learning.
+   to observe how the **Filtered Keyword (FIKCE)** feature affects the deep-learning classifiers.
 
-4. Lakukan langkah yang sama pada folder:
+4. Repeat the same steps in the:
 
    ```text
    notebooks/without_undersampling/
    ```
 
-   untuk mengevaluasi performa model pada kondisi dataset yang tidak seimbang (*imbalanced dataset*).
+   folder to evaluate model performance on the imbalanced dataset.
 
-5. Untuk analisis interpretasi, jalankan:
+5. For the interpretation analysis, run:
 
    ```text
    notebooks/04_clustering_analysis.ipynb
    ```
 
-   Notebook ini menghasilkan:
+   This notebook produces:
 
-   - Visualisasi UMAP 2D.
-   - Evaluasi nilai terbaik K-Means menggunakan **Silhouette Score**.
-   - Analisis variasi domain mata pelajaran berdasarkan distribusi soal.
+   - A 2D UMAP visualization.
+   - Evaluation of the optimal K-Means value using the Silhouette Score.
+   - An analysis of subject-domain variation based on the distribution of questions.
 
 ---
