@@ -27,7 +27,7 @@ FIKCE-BTC/
 │   │   ├── 01_baseline_models.ipynb          # Baseline experiments (without undersampling)
 │   │   ├── 02_proposed_bert_fikce.ipynb      # Proposed method: BERT + FIKCE (without undersampling)
 │   │   └── 03_proposed_roberta_fikce.ipynb   # Proposed method: RoBERTa + FIKCE (without undersampling)
-│   └── 04_clustering_analysis.ipynb          # Subject-domain analysis (K-Means & UMAP)
+│   └── 04_clustering_analysis.ipynb          # Exploratory clustering analysis (K-Means & UMAP)
 ├── requirements.txt                          # Library and dependency specifications
 └── README.md                                 # This file
 ```
@@ -63,20 +63,45 @@ Place the downloaded `.csv` file in the `data/` folder as described in `data/REA
 
 ## Main Experimental Results
 
-The table below summarizes model performance under the **undersampling** scenario (balanced dataset).
+The tables below summarize model performance on the held-out test set ($N = 1,754$) using leak-free training-split keyword extraction and early stopping on a 10% validation split ($N = 702$).
 
-| Embedding Model | Additional Feature | Architecture | Accuracy (%) | F1-Score | Implementation Script |
-|-----------------|---------------------|--------------|-------------:|---------:|------------------------|
-| BERT | None (Baseline) | CNN | 79.15 | 79.06 | `01_baseline_models.ipynb` |
-| BERT | None (Baseline) | CNN-LSTM | 80.11 | 79.67 | `01_baseline_models.ipynb` |
-| BERT | **FIKCE (Proposed)** | CNN-LSTM | **82.45** | **82.26** | `02_proposed_bert_fikce.ipynb` |
-| RoBERTa | None (Baseline) | LSTM | 79.36 | 79.38 | `01_baseline_models.ipynb` |
-| RoBERTa | **FIKCE (Proposed)** | CNN-LSTM | 83.94 | 83.81 | `03_proposed_roberta_fikce.ipynb` |
-| RoBERTa | **FIKCE (Proposed)** | CNN | **85.21** | **85.14** | `03_proposed_roberta_fikce.ipynb` |
+### Without Undersampling (Table 4, $N_{\text{train}} = 6,311$)
+
+| Embedding Model | Keyword Features | Architecture | Accuracy | Precision | Recall | F1-Score | Implementation Script |
+|-----------------|------------------|--------------|---------:|----------:|-------:|---------:|-----------------------|
+| BERT | None (Baseline) | CNN | 0.774 | 0.786 | 0.774 | 0.775 | `01_baseline_models.ipynb` |
+| BERT | None (Baseline) | LSTM | 0.790 | 0.793 | 0.790 | 0.789 | `01_baseline_models.ipynb` |
+| BERT | None (Baseline) | CNN-LSTM | 0.795 | 0.801 | 0.795 | 0.795 | `01_baseline_models.ipynb` |
+| BERT | **TF-IDF + Filtered Keyword** | CNN | 0.778 | 0.780 | 0.778 | 0.777 | `02_proposed_bert_fikce.ipynb` |
+| BERT | **TF-IDF + Filtered Keyword** | LSTM | **0.795** | **0.800** | **0.795** | **0.794** | `02_proposed_bert_fikce.ipynb` |
+| BERT | **TF-IDF + Filtered Keyword** | CNN-LSTM | 0.792 | 0.795 | 0.792 | 0.792 | `02_proposed_bert_fikce.ipynb` |
+| RoBERTa | None (Baseline) | CNN | 0.795 | 0.797 | 0.795 | 0.794 | `01_baseline_models.ipynb` |
+| RoBERTa | None (Baseline) | LSTM | 0.769 | 0.772 | 0.769 | 0.770 | `01_baseline_models.ipynb` |
+| RoBERTa | None (Baseline) | CNN-LSTM | 0.786 | 0.790 | 0.786 | 0.785 | `01_baseline_models.ipynb` |
+| RoBERTa | **TF-IDF + Filtered Keyword** | CNN | 0.769 | 0.779 | 0.769 | 0.771 | `03_proposed_roberta_fikce.ipynb` |
+| RoBERTa | **TF-IDF + Filtered Keyword** | LSTM | **0.790** | **0.796** | **0.790** | **0.789** | `03_proposed_roberta_fikce.ipynb` |
+| RoBERTa | **TF-IDF + Filtered Keyword** | CNN-LSTM | 0.784 | 0.787 | 0.784 | 0.783 | `03_proposed_roberta_fikce.ipynb` |
+
+### With Undersampling on Training Split Only (Table 5, $N_{\text{train}} = 3,378$)
+
+| Embedding Model | Keyword Features | Architecture | Accuracy | Precision | Recall | F1-Score | Implementation Script |
+|-----------------|------------------|--------------|---------:|----------:|-------:|---------:|-----------------------|
+| BERT | None (Baseline) | CNN | 0.742 | 0.749 | 0.742 | 0.743 | `01_baseline_models.ipynb` |
+| BERT | None (Baseline) | LSTM | 0.744 | 0.745 | 0.744 | 0.744 | `01_baseline_models.ipynb` |
+| BERT | None (Baseline) | CNN-LSTM | 0.750 | 0.759 | 0.750 | 0.751 | `01_baseline_models.ipynb` |
+| BERT | **TF-IDF + Filtered Keyword** | CNN | 0.742 | 0.751 | 0.742 | 0.743 | `02_proposed_bert_fikce.ipynb` |
+| BERT | **TF-IDF + Filtered Keyword** | LSTM | 0.745 | 0.748 | 0.745 | 0.745 | `02_proposed_bert_fikce.ipynb` |
+| BERT | **TF-IDF + Filtered Keyword** | CNN-LSTM | **0.750** | **0.759** | **0.750** | **0.751** | `02_proposed_bert_fikce.ipynb` |
+| RoBERTa | None (Baseline) | CNN | 0.752 | 0.758 | 0.752 | 0.744 | `01_baseline_models.ipynb` |
+| RoBERTa | None (Baseline) | LSTM | 0.733 | 0.744 | 0.733 | 0.735 | `01_baseline_models.ipynb` |
+| RoBERTa | None (Baseline) | CNN-LSTM | 0.730 | 0.748 | 0.730 | 0.733 | `01_baseline_models.ipynb` |
+| RoBERTa | **TF-IDF + Filtered Keyword** | CNN | **0.754** | **0.759** | **0.754** | **0.750** | `03_proposed_roberta_fikce.ipynb` |
+| RoBERTa | **TF-IDF + Filtered Keyword** | LSTM | 0.736 | 0.739 | 0.736 | 0.737 | `03_proposed_roberta_fikce.ipynb` |
+| RoBERTa | **TF-IDF + Filtered Keyword** | CNN-LSTM | 0.745 | 0.749 | 0.745 | 0.746 | `03_proposed_roberta_fikce.ipynb` |
 
 > **Note**
 >
-> All other experimental variations, including combinations with standard TF-IDF and the **without-undersampling** scenario, are available and reproducible from the `notebooks/` directory.
+> Full outputs for all 18 configurations per setting (including standard unfiltered TF-IDF, Table 2 filtered keywords, and Table 6a/6b per-class and confusion-pair analyses) are saved directly in the executed notebooks under `notebooks/without_undersampling/` and `notebooks/with_undersampling/`.
 
 ---
 
@@ -121,6 +146,6 @@ To reproduce the full set of experiments, run the notebooks in the following ord
 
    - A 2D UMAP visualization.
    - Evaluation of the optimal K-Means value using the Silhouette Score.
-   - An analysis of subject-domain variation based on the distribution of questions.
+   - Exploratory cluster distribution analysis of Bloom's Taxonomy cognitive levels across semantic question groups.
 
 ---
